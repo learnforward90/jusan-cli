@@ -22,6 +22,7 @@ public class Main {
             String[] fullCommandSplit = fullCommand.split(" ");
             String baseCommand = fullCommandSplit[0];
             if (fullCommand.equalsIgnoreCase("exit")){
+                myFile.exit();
                 break;
             }
             switch (baseCommand){
@@ -58,6 +59,8 @@ public class Main {
                 case "help":
                     myFile.help();
                     break;
+                default:
+                    System.out.println("No such command. Use help to find available commands.");
             }
 
         }
@@ -74,7 +77,7 @@ public class Main {
             Files.copy(source, destination);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Oops! No such file. Use correct one!");
         }
     }
 }

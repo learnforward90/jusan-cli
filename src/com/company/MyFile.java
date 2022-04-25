@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 import static com.company.Main.copySourceToDest;
@@ -13,76 +14,113 @@ import static com.company.Main.copySourceToDest;
 public class MyFile {
 
     public static void listDirectory(String path) throws FileNotFoundException {
+
         File[] files = new File(path).listFiles();
-        for (File file : files) {
-            System.out.println(file.getName());
+        try{
+            for (File file : files) {
+                System.out.println(file.getName());
+            }
+        } catch (Exception e){
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
+
     }
     public static void listPythonFiles(String path) {
         File[] files = new File(path).listFiles();
-        for (File file : files) {
-            if (file.getName().contains(".py")) {
-                System.out.println(file.getName());
+        try{
+            for (File file : files) {
+                if (file.getName().contains(".py")) {
+                    System.out.println(file.getName());
+                }
             }
+        } catch (Exception e){
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
+
     }
     public static void isDirectory(String path) {
         boolean file = new File(path).isDirectory();
-        if (file){
-            System.out.println("true");
-        } else {
-            System.out.println("false");
+        try{
+            if (file){
+                System.out.println("true");
+            } else {
+                System.out.println("false");
+            }
+        } catch (Exception e){
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
+
     }
     public static void define(String path) {
         File myFile = new File(path);
-        if (myFile.isFile()){
-            System.out.println("файл");
-        } else if (myFile.isDirectory()){
-            System.out.println("директория");
+        try{
+            if (myFile.isFile()){
+                System.out.println("файл");
+            } else if (myFile.isDirectory()){
+                System.out.println("директория");
+            }
+        } catch (Exception e){
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
+
     }
     public static void printPermissions(String path) {
         File myFile = new File(path);
-        String[] str = new String[3];
-        str[0] = (myFile.canRead()) ? ("r"):("-");
-        str[1] = (myFile.canWrite()) ? ("w"):("-");
-        str[2] = (myFile.canExecute()) ? ("x"):("-");
-        for (String letter: str){
-            System.out.print(letter);
+        try{
+            String[] str = new String[3];
+            str[0] = (myFile.canRead()) ? ("r"):("-");
+            str[1] = (myFile.canWrite()) ? ("w"):("-");
+            str[2] = (myFile.canExecute()) ? ("x"):("-");
+            for (String letter: str){
+                System.out.print(letter);
+            }
+            System.out.println();
+        } catch (Exception e){
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
-        System.out.println();
+
+
     }
     public static void setPermissions(String path, String permissions) {
 
-        if (permissions.charAt(0) == 114){
-            new File(path).setReadable(true);
-        } else {
-            new File(path).setReadable(false);
+        try{
+            if (permissions.charAt(0) == 114){
+                new File(path).setReadable(true);
+            } else {
+                new File(path).setReadable(false);
+            }
+
+            if (permissions.charAt(1) == 119) {
+                new File(path).setWritable(true);
+            }else {
+                new File(path).setWritable(false);
+            }
+
+            if (permissions.charAt(2) == 120) {
+                new File(path).setExecutable(true);
+            } else{
+                new File(path).setExecutable(false);
+            }
+
+            System.out.println("Permissions changed");
+        } catch (Exception e){
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
 
-        if (permissions.charAt(1) == 119) {
-            new File(path).setWritable(true);
-        }else {
-            new File(path).setWritable(false);
-        }
-
-        if (permissions.charAt(2) == 120) {
-            new File(path).setExecutable(true);
-        } else{
-            new File(path).setExecutable(false);
-        }
-
-        System.out.println("Permissions changed");
 
     }
     public static void printContent(String path) throws FileNotFoundException {
         File file = new File(path);
-        Scanner myReader = new Scanner(file);
-        while (myReader.hasNextLine()) {
-            String data = myReader.nextLine();
-            System.out.println(data);
+        try{
+            Scanner myReader = new Scanner(file);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                System.out.println(data);
+            }
+        } catch (Exception e){
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
+
     }
     public static void appendFooter(String path)  {
         try (FileWriter f = new FileWriter(path, true);
@@ -92,30 +130,39 @@ public class MyFile {
             p.println("# Autogenerated line");
 
         } catch (IOException i) {
-            i.printStackTrace();
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
 
     }
     public static void createBackup(String path) throws IOException {
-        final Path fromPath = Paths.get(path);
+        try{
+            final Path fromPath = Paths.get(path);
 
-        Files.walk(fromPath)
-                .forEach(source -> copySourceToDest(fromPath, source));
+            Files.walk(fromPath)
+                    .forEach(source -> copySourceToDest(fromPath, source));
+        } catch (IOException i) {
+            System.out.println("Oops! No such folder/file. Print correct address");
+        }
+
+
     }
     public static void printLongestWord(String path) throws IOException {
         String longest_word = "";
         String current;
-        Scanner sc = new Scanner(new File(path));
-
-
-        while (sc.hasNext()) {
-            current = sc.next();
-            if (current.length() > longest_word.length()) {
-                longest_word = current;
+        try{
+            Scanner sc = new Scanner(new File(path));
+            while (sc.hasNext()) {
+                current = sc.next();
+                if (current.length() > longest_word.length()) {
+                    longest_word = current;
+                }
             }
-
+            System.out.println(longest_word);
+        } catch (IOException i) {
+            System.out.println("Oops! No such folder/file. Print correct address");
         }
-        System.out.println(longest_word);
+
+
     }
     public static void help() {
         System.out.println("MyFS 1.0 команды:");
@@ -132,5 +179,7 @@ public class MyFile {
         System.out.println("help                    выводит список команд и их описание" );
         System.out.println("exit                    завершает работу программы" );
     }
-    public static void exit() { }
+    public static void exit() {
+        System.out.println("Goodbye!");
+    }
 }
